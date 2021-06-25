@@ -1,0 +1,5 @@
+controllers:
+  - name: competition
+    macAddress: 00:80:2f:17:f8:26
+  - name: testbench
+    macAddress: 00:80:2f:17:c3:4f

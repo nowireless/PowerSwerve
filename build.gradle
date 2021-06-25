@@ -52,7 +52,13 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    testImplementation 'junit:junit:4.12'
+    implementation "org.yaml:snakeyaml:1.23"
+
+    // testImplementation 'junit:junit:4.12'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.0.3"
+    testImplementation "org.mockito:mockito-core:2.+"
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.3"
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
@@ -76,4 +82,8 @@ sim {
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+test {
+    useJUnitPlatform()
 }
