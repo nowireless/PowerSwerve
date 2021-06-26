@@ -28,6 +28,14 @@ public class RoboRIOConstants {
 
         String name;
         String macAddress;
+
+        @Override
+        public String toString() {
+            return "RoboRIO{" +
+                    "name='" + name + '\'' +
+                    ", macAddress='" + macAddress + '\'' +
+                    '}';
+        }
     }
 
     private final RoboRIOData data_;
@@ -56,7 +64,7 @@ public class RoboRIOConstants {
 
     public RoboRIO getViaMAC(String macAddress) {
         for (RoboRIO controller : data_.controllers) {
-            if (controller.macAddress != null) continue;
+            if (controller.macAddress == null) continue;
 
             if (controller.macAddress.equals(macAddress)) {
                 return controller;

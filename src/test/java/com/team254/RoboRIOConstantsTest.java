@@ -2,9 +2,6 @@ package com.team254;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.hamcrest.Matchers.*;
@@ -38,7 +35,9 @@ public class RoboRIOConstantsTest {
     @Test
     public void testGetViaMAC_KnownMAC() {
         RoboRIOConstants constants = new RoboRIOConstants("testing/controller_constants.yaml");
-        assertTrue(constants.getKnownControllers().size() != 0, "Zero controllers loaded from YAML file");
+        assertTrue(constants.getKnownControllers().size() == 2, "Wrong number of controlers loaded from yaml");
+
+        System.out.println(constants.getKnownControllers());
 
         var controller = constants.getViaMAC("00:80:2f:17:f8:26");
         assertNotNull(controller);
