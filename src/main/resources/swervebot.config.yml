@@ -1,0 +1,32 @@
+subsystems:
+  drive:
+    implemented: true
+    talons:
+      front_left_steer:  31 #23 ADC:597
+      front_right_steer: 34 #22 ADC:479
+      back_left_steer:   33 #   ADC:533
+      back_right_steer:  32 #20 ADC:849
+    sparks:
+      front_left_drive:  31 # 33
+      front_right_drive: 34 # 32
+      back_left_drive:   33
+      back_right_drive:  32 # 30
+
+    constants:
+      steer_kp: 10
+      steer_ki: 0
+      steer_kd: 1
+
+      # No Idea if these are correct
+      front_left_id:  1
+      front_right_id: 4
+      back_left_id:   3
+      back_right_id:  2
+  canifier:
+    implemented: true
+    constants:
+      canId: 12
+
+constants:
+  wheelbase_length: 30
+  track_width: 30
