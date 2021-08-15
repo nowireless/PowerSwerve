@@ -1,4 +1,4 @@
-package com.team254.team254.util.test;
+package com.team254.test;
 
 public class ControlledActuatorLinearSim {
     double mMinPosition, mMaxPosition, mVelocity;

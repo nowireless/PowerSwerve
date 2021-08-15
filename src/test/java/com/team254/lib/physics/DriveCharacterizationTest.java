@@ -1,6 +1,5 @@
-package com.team254.team254.lib.physics;
+package com.team254.lib.physics;
 
-import com.team254.lib.physics.DriveCharacterization;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

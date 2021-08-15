@@ -1,8 +1,7 @@
-package com.team254.team254.lib.trajectory.timing;
+package com.team254.lib.trajectory.timing;
 
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Translation2d;
-import com.team254.lib.trajectory.timing.TimedState;
 import com.team254.lib.util.Util;
 import org.junit.jupiter.api.Test;
 

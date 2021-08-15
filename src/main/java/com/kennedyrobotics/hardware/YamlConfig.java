@@ -66,6 +66,7 @@ public class YamlConfig {
         Map<String, Integer> talons = new HashMap<>();
         Map<String, Integer> falcons = new HashMap<>();
         Map<String, Integer> victors = new HashMap<>();
+        Map<String, Integer> sparks = new HashMap<>();
         Map<String, Integer> solenoids = new HashMap<>();
         Map<String, DoubleSolenoidConfig> doublesolenoids = new HashMap<>();
         Map<String, Double> constants = new HashMap<>();
@@ -94,6 +95,7 @@ public class YamlConfig {
                             talons.equals(that.talons) &&
                             falcons.equals(that.falcons) &&
                             victors.equals(that.victors) &&
+                            sparks.equals(that.sparks) &&
                             solenoids.equals(that.solenoids) &&
                             doublesolenoids.equals(that.doublesolenoids) &&
                             constants.equals(that.constants) &&
@@ -109,6 +111,7 @@ public class YamlConfig {
                     talons,
                     falcons,
                     victors,
+                    sparks,
                     solenoids,
                     doublesolenoids,
                     constants,
@@ -139,6 +142,7 @@ public class YamlConfig {
             mergeMap(result.talons, active.talons, base.talons);
             mergeMap(result.falcons, active.falcons, base.falcons);
             mergeMap(result.victors, active.victors, base.victors);
+            mergeMap(result.sparks, active.sparks, base.sparks);
             mergeMap(result.solenoids, active.solenoids, base.solenoids);
             mergeMap(
                     result.doublesolenoids,

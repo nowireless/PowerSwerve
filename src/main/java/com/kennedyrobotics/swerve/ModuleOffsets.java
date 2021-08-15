@@ -1,6 +1,6 @@
 package com.kennedyrobotics.swerve;
 
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import com.team254.lib.geometry.Rotation2d;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 

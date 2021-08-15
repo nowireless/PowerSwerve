@@ -1,4 +1,4 @@
-package com.team254.team254.lib.trajectory;
+package com.team254.lib.trajectory;
 
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Pose2dWithCurvature;
@@ -6,7 +6,6 @@ import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
-import com.team254.lib.trajectory.*;
 import com.team254.lib.trajectory.timing.DifferentialDriveDynamicsConstraint;
 import com.team254.lib.trajectory.timing.TimedState;
 import com.team254.lib.trajectory.timing.TimingUtil;

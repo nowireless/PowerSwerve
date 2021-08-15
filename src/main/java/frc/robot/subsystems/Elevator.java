@@ -67,7 +67,7 @@ public class Elevator extends SubsystemBase {
         // - Positive Encoder values mean up
         // - Positive Motor command values mean up
         //
-        liftMotorLeader = factory.getMotor(NAME, "liftLeader");
+        liftMotorLeader = factory.getCtreMotor(NAME, "liftLeader");
         liftMotorLeader.setInverted(false);
         liftMotorLeader.setNeutralMode(NeutralMode.Brake);
         liftMotorLeader.configForwardLimitSwitchSource(
@@ -77,7 +77,7 @@ public class Elevator extends SubsystemBase {
         CTREMotorUtil.configClearPositionOnLimitR(liftMotorLeader, true, CANConstants.kLongTimeoutMs);
 
         // Follower configuraiton
-        liftMotorFollower = factory.getMotor(NAME, "liftFollower", liftMotorLeader);
+        liftMotorFollower = factory.getCtreMotor(NAME, "liftFollower", liftMotorLeader);
 
         // The lift break is a single solenoid, that by default does not break the elevator. It has to be commanded to
         // break.

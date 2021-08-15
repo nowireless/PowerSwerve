@@ -24,15 +24,13 @@ public interface CheesySubsystem {
     public default void writePeriodicOutputs() {
     }
 
-    public boolean checkSystem();
+    public default boolean checkSystem() { return true; };
 
     public void outputTelemetry();
 
     public void stop();
 
-    public default void zeroSensors() {
-    }
+    public default void zeroSensors() {}
 
-    public default void registerEnabledLoops(ILooper enabledLooper) {
-    }
+    public default void registerEnabledLoops(ILooper enabledLooper) {}
 }

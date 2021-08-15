@@ -1,12 +1,9 @@
-package com.team254.team254.lib.trajectory;
+package com.team254.lib.trajectory;
 
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import com.team254.lib.geometry.Twist2d;
-import com.team254.lib.trajectory.DistanceView;
-import com.team254.lib.trajectory.PurePursuitController;
-import com.team254.lib.trajectory.Trajectory;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

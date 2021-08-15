@@ -1,4 +1,4 @@
-package com.team254.team254.lib.physics;
+package com.team254.lib.physics;
 
 import com.team254.lib.util.Util;
 

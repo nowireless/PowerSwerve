@@ -6,6 +6,8 @@ import com.kennedyrobotics.hardware.components.CanifierImpl;
 import com.kennedyrobotics.hardware.components.GhostCanifier;
 import com.kennedyrobotics.hardware.components.ICanifier;
 import com.kennedyrobotics.hardware.components.pcm.*;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import com.team254.RoboRIOConstants;
 import edu.wpi.first.wpilibj.DriverStation;
 import javax.annotation.Nonnull;
@@ -50,7 +52,7 @@ public class RobotFactory {
         verbose = getConstant("verbose") >= 1;
     }
 
-    public IMotorControllerEnhanced getMotor(String subsystemName, String name) {
+    public IMotorControllerEnhanced getCtreMotor(String subsystemName, String name) {
         IMotorControllerEnhanced motor = null;
         var subsystem = getSubsystem(subsystemName);
 
@@ -108,7 +110,7 @@ public class RobotFactory {
         return motor;
     }
 
-    public IMotorController getMotor(
+    public IMotorController getCtreMotor(
             String subsystemName,
             String name,
             IMotorController master
@@ -152,6 +154,18 @@ public class RobotFactory {
             motor.setInverted(master.getInverted());
         }
         return motor;
+    }
+
+    public CANSparkMax getRevMotor(String subsystemName, String name, CANSparkMaxLowLevel.MotorType type) {
+        var subsystem = getSubsystem(subsystemName);
+
+        if (!subsystem.isImplemented()) return null;
+
+        if (subsystem.sparks.get(name) != null && subsystem.sparks.get(name) > -1) {
+            return new CANSparkMax(subsystem.sparks.get(name), type);
+        }
+
+        return null;
     }
 
     private boolean isHardwareValid(Integer hardwareId) {

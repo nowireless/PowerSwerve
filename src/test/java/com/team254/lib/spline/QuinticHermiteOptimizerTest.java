@@ -1,9 +1,8 @@
-package com.team254.team254.lib.spline;
+package com.team254.lib.spline;
 
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
-import com.team254.lib.spline.QuinticHermiteSpline;
 import com.team254.lib.util.Util;
 import org.junit.jupiter.api.Test;
 

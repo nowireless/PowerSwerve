@@ -1,24 +1,22 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.kennedyrobotics.RobotFactory;
-import com.kennedyrobotics.subsystem.KennSubsystem;
+import com.kennedyrobotics.hardware.RobotFactory;
 import com.kennedyrobotics.swerve.*;
 import com.kennedyrobotics.swerve.SwerveSignal.ControlOrientation;
 import com.kennedyrobotics.swerve.drive.DriveSparkMax;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.team254.lib.geometry.Rotation2d;
+import com.team254.lib.subsystems.CheesySubsystem;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.TeleopDriveCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Drive extends KennSubsystem {
+public class Drive extends SubsystemBase implements CheesySubsystem {
 
     public static class PeriodicIO {
         // INPUTS
@@ -34,7 +32,6 @@ public class Drive extends KennSubsystem {
 
     // Helpers
     private final RobotFactory factory_;
-    private final Logger log = LoggerFactory.getLogger("Drive");
     private final SwerveDriveHelper helper_ = new SwerveDriveHelper(kWheelBaseLength, kTrackWidth);
     private final ModuleOffsets moduleOffsets_ = new ModuleOffsets();
 
@@ -79,7 +76,7 @@ public class Drive extends KennSubsystem {
          */
         SwerveModule.Config frontLeft = SwerveModule.getDefaultConfig(kP, kI, kD);
         frontLeft.moduleOffset = moduleOffsets_.getOffset(
-                factory.getConstant("drive", "front_left_id").intValue()
+                (int)factory.getConstant("drive", "front_left_id")
         );
         frontLeft_ = new SwerveModule(
             "FrontLeft", 
@@ -90,7 +87,7 @@ public class Drive extends KennSubsystem {
 
         SwerveModule.Config frontRight = SwerveModule.getDefaultConfig(kP, kI, kD);
         frontRight.moduleOffset = moduleOffsets_.getOffset(
-                factory.getConstant("drive", "front_right_id").intValue()
+                (int)factory.getConstant("drive", "front_right_id")
         );
         frontRight_ = new SwerveModule(
             "FrontRight", 
@@ -101,7 +98,7 @@ public class Drive extends KennSubsystem {
 
         SwerveModule.Config backLeft = SwerveModule.getDefaultConfig(kP, kI, kD);
         backLeft.moduleOffset = moduleOffsets_.getOffset(
-                factory.getConstant("drive", "back_left_id").intValue()
+                (int)factory.getConstant("drive", "back_left_id")
         );
         backLeft_ = new SwerveModule(
             "BackLeft",
@@ -112,7 +109,7 @@ public class Drive extends KennSubsystem {
 
         SwerveModule.Config backRight = SwerveModule.getDefaultConfig(kP, kI, kD);
         backRight.moduleOffset = moduleOffsets_.getOffset(
-                factory.getConstant("drive", "back_right_id").intValue()
+                (int)factory.getConstant("drive", "back_right_id")
         );
         backRight_ = new SwerveModule(
             "BackRight", 
@@ -129,10 +126,10 @@ public class Drive extends KennSubsystem {
         );
     }
 
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new TeleopDriveCommand());
-    }
+//    @Override
+//    protected void initDefaultCommand() {
+//        setDefaultCommand(new TeleopDriveCommand());
+//    }
 
     public void initialize() {
         modules_.forEach((m) -> m.initialize());
@@ -146,7 +143,7 @@ public class Drive extends KennSubsystem {
     }
 
     public void set(SwerveSignal signal) {
-        log.trace("Command: " + signal);
+        log("Command: " + signal);
 
         if (signal.orientation() == ControlOrientation.kFieldCentric) {
             signal.fieldOrient(this.getHeading());
@@ -157,7 +154,7 @@ public class Drive extends KennSubsystem {
         // Pass along the swerve singal's brake setting
         periodicIO_.swerveCommand.setBrake(signal.brakeMode());
 
-        log.trace("Move " +
+        log("Move " +
                 periodicIO_.swerveCommand.frontLeft.speed + ", " +
                 periodicIO_.swerveCommand.frontRight.speed + ", " +
                 periodicIO_.swerveCommand.backLeft.speed + ", " +
@@ -221,6 +218,14 @@ public class Drive extends KennSubsystem {
 
     public List<SwerveModule> modules() {
         return modules_;
+    }
+
+    private void log(String msg) {
+        System.out.println("[Drive] INFO: " + msg);
+    }
+
+    private void logWarn(String msg) {
+        System.out.println("[Drive] WARN: " + msg);
     }
 
 }
