@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 import com.kennedyrobotics.hardware.RobotFactory;
 import com.kennedyrobotics.swerve.*;
@@ -36,7 +38,8 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
     private final ModuleOffsets moduleOffsets_ = new ModuleOffsets();
 
     // Hardware
-    private final AHRS imu_;
+    private final PigeonIMU imu_;
+    private final TalonSRX pigionIMUTalon_;
     private final SwerveModule frontLeft_;
     private final SwerveModule frontRight_;
     private final SwerveModule backLeft_;
@@ -62,7 +65,9 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
          * IMU
          */
         // TODO: Add getAHRS method to RobotFactory and read what port the NavX is from Yaml
-        imu_ = new AHRS(Port.kUSB);
+        // TODO: THIS IS A HACK FOR RIGHT NOW BECUASE IT IS EASY!!!!
+        pigionIMUTalon_ = new TalonSRX(20);
+        imu_ = new PigeonIMU(pigionIMUTalon_);
 
         /*
          * PID Configuration 

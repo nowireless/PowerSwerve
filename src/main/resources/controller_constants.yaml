@@ -1,5 +1,5 @@
 controllers:
 - name: swervebot
-  macAddress: 00:80:2f:17:f8:26
+  macAddress: 00:80:2f:17:f8:25
 - name: testbench
   macAddress: 00:80:2f:17:c3:4f

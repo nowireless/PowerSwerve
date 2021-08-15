@@ -2,10 +2,10 @@ subsystems:
   drive:
     implemented: true
     talons:
-      front_left_steer:  31 #23 ADC:597
-      front_right_steer: 34 #22 ADC:479
-      back_left_steer:   33 #   ADC:533
-      back_right_steer:  32 #20 ADC:849
+      front_left_steer:  31
+      front_right_steer: 34
+      back_left_steer:   33
+      back_right_steer:  32
     sparks:
       front_left_drive:  31 # 33
       front_right_drive: 34 # 32
@@ -17,16 +17,26 @@ subsystems:
       steer_ki: 0
       steer_kd: 1
 
-      # No Idea if these are correct
+      # Used to lookup module offsets
       front_left_id:  1
       front_right_id: 4
       back_left_id:   3
       back_right_id:  2
-  canifier:
+
+  elevator:
     implemented: true
+    falcons:
+      liftLeader: 10
+      liftFollower: 11
+    solenoids:
+      liftBrake: 0
     constants:
-      canId: 12
+      intakeHeightOffset: 0
+
+pcm: 0
 
 constants:
   wheelbase_length: 30
   track_width: 30
+
+  verbose: 1

@@ -24,11 +24,18 @@ public class RobotFactory {
         if (factory == null) {
             controllerConstants = new RoboRIOConstants();
 
+            String macAddress = RoboRIOConstants.getMACAddress();
+            System.out.println("Robot MAC Address:" + macAddress);
+            System.out.println("Known Robot Controllers");
+            for (var controller : controllerConstants.getKnownControllers()) {
+                System.out.println("  " + controller.toString());
+            }
+
             var robotName = controllerConstants.getName();
             if (robotName == null) {
                 robotName = "default";
                 DriverStation.reportWarning(
-                        "ROBOT_NAME environment variable not defined, falling back to default.config.yaml!",
+                        "Unable to determine robot name, falling back to default.config.yaml!",
                         false
                 );
             }
@@ -84,30 +91,31 @@ public class RobotFactory {
         }
 
         // Motor configuration
-        if (subsystem.isImplemented() && subsystem.invertMotor.contains(name)) {
-            System.out.println("Inverting " + name + " with ID " + motor.getDeviceID());
-            motor.setInverted(true);
-        }
-        motor.config_kP(
-                0,
-                getConstant(subsystemName, "kP", 0),
-                CANConstants.kLongTimeoutMs
-        );
-        motor.config_kI(
-                0,
-                getConstant(subsystemName, "kI", 0),
-                CANConstants.kLongTimeoutMs
-        );
-        motor.config_kD(
-                0,
-                getConstant(subsystemName, "kD", 0),
-                CANConstants.kLongTimeoutMs
-        );
-        motor.config_kF(
-                0,
-                getConstant(subsystemName, "kF", 0),
-                CANConstants.kLongTimeoutMs
-        );
+        // TODO Make this togglable...
+//        if (subsystem.isImplemented() && subsystem.invertMotor.contains(name)) {
+//            System.out.println("Inverting " + name + " with ID " + motor.getDeviceID());
+//            motor.setInverted(true);
+//        }
+//        motor.config_kP(
+//                0,
+//                getConstant(subsystemName, "kP", 0),
+//                CANConstants.kLongTimeoutMs
+//        );
+//        motor.config_kI(
+//                0,
+//                getConstant(subsystemName, "kI", 0),
+//                CANConstants.kLongTimeoutMs
+//        );
+//        motor.config_kD(
+//                0,
+//                getConstant(subsystemName, "kD", 0),
+//                CANConstants.kLongTimeoutMs
+//        );
+//        motor.config_kF(
+//                0,
+//                getConstant(subsystemName, "kF", 0),
+//                CANConstants.kLongTimeoutMs
+//        );
 
         return motor;
     }

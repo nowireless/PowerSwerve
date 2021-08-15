@@ -133,13 +133,13 @@ public class Elevator extends SubsystemBase {
 
             if (periodicIO.demand == 0.0) {
                 // When the elevator is not being command to move set the break
-                if (!liftBrake.get()) {
+                if (!liftBrake.get() && DriverStation.getInstance().isEnabled()) {
                     System.out.println("Turning brake on");
                 }
                 liftBrake.set(true);
             } else {
                 // WHen the elevator is being commanded to move release the break
-                if (liftBrake.get()) {
+                if (liftBrake.get() && DriverStation.getInstance().isEnabled()) {
                     System.out.println("Turning brake off");
                 }
                 liftBrake.set(false);

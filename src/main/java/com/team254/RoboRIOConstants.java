@@ -93,6 +93,11 @@ public class RoboRIOConstants {
             while (nwInterface.hasMoreElements()) {
                 NetworkInterface nis = nwInterface.nextElement();
                 if (nis != null) {
+                    if (!nis.getDisplayName().equals("eth0")) {
+                        System.out.println("Ignoring interface " + nis.getDisplayName());
+                        continue;
+                    }
+
                     byte[] mac = nis.getHardwareAddress();
                     if (mac != null) {
                         for (int i = 0; i < mac.length; i++) {
