@@ -68,8 +68,7 @@ public class SwerveModule implements CheesySubsystem {
         boolean ready = false;
 
         // INPUTS
-        int absoluteAngleRaw;
-        int absoluteAngleRadians;
+        double absoluteAngleRaw;
         Rotation2d absoluteAngle;
         double steerClosedLoopError;
 

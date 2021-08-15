@@ -1,5 +1,6 @@
 package com.kennedyrobotics.swerve.drive;
 
+import com.kennedyrobotics.exceptions.TodoException;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -21,22 +22,24 @@ public class DriveSparkMax implements DriveMotor {
 
         if (controller_ == null) return;
 
-        // There is a bug with the spark max library that always sets the sensor kNoSensor
-        CANError err = SparkMaxUtil.setSensorType(controller_, SensorType.kHallSensor);
-        if (err != CANError.kOk) {
-            DriverStation.reportError("Unable to set kHallSensor for spark ID: " + controller_.getDeviceId(), false);
-        }
+        // TODO Verify that this bug has been fixed, removing this now
+        // // There is a bug with the spark max library that always sets the sensor kNoSensor
+        // CANError err = SparkMaxUtil.setSensorType(controller_, SensorType.kHallSensor);
+        // if (err != CANError.kOk) {
+        //     DriverStation.reportError("Unable to set kHallSensor for spark ID: " + controller_.getDeviceId(), false);
+        // }
 
         controller_.setOpenLoopRampRate(0.5);
     }
 
     @Override
     public void initialize() {
-        // There is a bug with the spark max library that always sets the sensor kNoSensor
-        CANError err = SparkMaxUtil.setSensorType(controller_, SensorType.kHallSensor);
-        if (err != CANError.kOk) {
-            DriverStation.reportError("Unable to set kHallSensor for spark ID: " + controller_.getDeviceId(), false);
-        }
+        // TODO Verify that this bug has been fixed, removing this now
+        // // There is a bug with the spark max library that always sets the sensor kNoSensor
+        // CANError err = SparkMaxUtil.setSensorType(controller_, SensorType.kHallSensor);
+        // if (err != CANError.kOk) {
+        //     DriverStation.reportError("Unable to set kHallSensor for spark ID: " + controller_.getDeviceId(), false);
+        // }
     }
 
     @Override
