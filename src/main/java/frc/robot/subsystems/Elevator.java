@@ -100,6 +100,8 @@ public class Elevator extends SubsystemBase {
 
         // Write output
         writePeriodicOutputs();
+
+        outputTelemetry();
     }
 
     public void readPeriodicInputs() {
