@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 
 public class RobotFactory {
 
+    public final String robotName;
     private YamlConfig config;
     private static boolean verbose;
     private static RobotFactory factory;
@@ -37,14 +38,15 @@ public class RobotFactory {
         return factory;
     }
 
-    public RobotFactory(String configName) {
-        System.out.println("Loading Config for " + configName);
+    public RobotFactory(String robotName) {
+        this.robotName = robotName;
+        System.out.println("Loading Config for " + robotName);
         try {
             config =
                     YamlConfig.loadFrom(
                             this.getClass()
                                     .getClassLoader()
-                                    .getResourceAsStream(configName + ".config.yml")
+                                    .getResourceAsStream(robotName + ".config.yml")
                     );
         } catch (ConfigIsAbstractException e) {
             DriverStation.reportError("Yaml Config was abstract!", e.getStackTrace());

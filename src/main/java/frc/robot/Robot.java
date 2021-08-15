@@ -4,7 +4,15 @@
 
 package frc.robot;
 
+import com.kennedyrobotics.hardware.RobotFactory;
+import com.kennedyrobotics.util.JoystickWarningHelper;
+import com.team254.lib.geometry.Rotation2d;
+import com.team254.lib.loops.Looper;
+import com.team254.lib.subsystems.SubsystemManager;
+import com.team254.lib.util.CrashTracker;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -19,15 +27,32 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  public Robot() {
+    CrashTracker.logRobotConstruction();
+  }
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    try {
+      CrashTracker.logRobotInit();
+
+      // Disable Joystick warning
+      JoystickWarningHelper.disableWarning();
+
+      var factory = RobotFactory.getInstance();
+      DriverStation.reportError("Robot Name: " + factory, false);
+
+      // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+      // autonomous chooser on the dashboard.
+      m_robotContainer = new RobotContainer();
+    } catch(Throwable t) {
+      CrashTracker.logThrowableCrash(t);
+      throw t;
+    }
   }
 
   /**
@@ -44,52 +69,115 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    m_robotContainer.m_subsystemManager.outputToSmartDashboard();
+
+    SmartDashboard.putNumber("Memory Free", Runtime.getRuntime().freeMemory());
+    SmartDashboard.putNumber("Memory Total", Runtime.getRuntime().totalMemory());
+    SmartDashboard.putNumber("Memory Max", Runtime.getRuntime().maxMemory());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    SmartDashboard.putString("Match Cycle", "DISABLED");
+
+    try {
+      CrashTracker.logDisabledInit();
+      m_robotContainer.m_enabledLooper.stop();
+      m_robotContainer.m_disabledLooper.start();
+
+    } catch (Throwable t) {
+      CrashTracker.logThrowableCrash(t);
+      throw t;
+    }
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    SmartDashboard.putString("Match Cycle", "DISABLED");
+
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    SmartDashboard.putString("Match Cycle", "AUTONOMOUS");
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+
+    try {
+      CrashTracker.logAutoInit();
+      m_robotContainer.m_disabledLooper.stop();
+
+      m_robotContainer.m_drive.initialize();
+
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+      // schedule the autonomous command (example)
+      if (m_autonomousCommand != null) {
+        m_autonomousCommand.schedule();
+      }
+
+      m_robotContainer.m_enabledLooper.start();
+    } catch (Throwable t) {
+      CrashTracker.logThrowableCrash(t);
+      throw t;
     }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    SmartDashboard.putString("Match Cycle", "AUTONOMOUS");
+  }
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    SmartDashboard.putString("Match Cycle", "TELEOP");
+
+    try {
+      CrashTracker.logTeleopInit();
+      m_robotContainer.m_disabledLooper.stop();
+
+      m_robotContainer.m_drive.initialize();
+      m_robotContainer.m_drive.setHeading(Rotation2d.identity()); // TODO this is the initial heading of the robot
+
+      // This makes sure that the autonomous stops running when
+      // teleop starts running. If you want the autonomous to
+      // continue until interrupted by another command, remove
+      // this line or comment it out.
+      if (m_autonomousCommand != null) {
+        m_autonomousCommand.cancel();
+      }
+
+      m_robotContainer.m_enabledLooper.start();
+    } catch (Throwable t) {
+      CrashTracker.logThrowableCrash(t);
+      throw t;
     }
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartDashboard.putString("Match Cycle", "TELEOP");
+
+  }
 
   @Override
   public void testInit() {
+    SmartDashboard.putString("Match Cycle", "TEST");
+
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    SmartDashboard.putString("Match Cycle", "TEST");
+    m_robotContainer.m_disabledLooper.stop();
+    m_robotContainer.m_enabledLooper.stop();
+
+  }
 }
