@@ -53,6 +53,7 @@ dependencies {
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
     implementation "org.yaml:snakeyaml:1.23"
+    implementation "gov.nist.math:jama:1.0.3"
 
     // testImplementation 'junit:junit:4.12'
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.0.3"
