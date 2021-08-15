@@ -1,16 +1,17 @@
+# TODO Idea, add a Unit test that runs that verifies that no duplicate IPS have been added.
 subsystems:
   drive:
     implemented: true
     talons:
-      front_left_steer:  31
-      front_right_steer: 34
+      front_left_steer:  34
+      front_right_steer: 32
       back_left_steer:   33
-      back_right_steer:  32
+      back_right_steer:  31
     sparks:
-      front_left_drive:  31 # 33
-      front_right_drive: 34 # 32
+      front_left_drive:  34
+      front_right_drive: 32
       back_left_drive:   33
-      back_right_drive:  32 # 30
+      back_right_drive:  31
 
     constants:
       steer_kp: 10
@@ -18,10 +19,11 @@ subsystems:
       steer_kd: 1
 
       # Used to lookup module offsets
-      front_left_id:  1
-      front_right_id: 4
-      back_left_id:   3
-      back_right_id:  2
+      # TODO Idea use these values to look up the swerve module IDs
+      front_left_id:  4 # 1
+      front_right_id: 2 # 4
+      back_left_id:   3 # 3
+      back_right_id:  1 # 2
 
   elevator:
     implemented: true
@@ -36,7 +38,7 @@ subsystems:
 pcm: 0
 
 constants:
-  wheelbase_length: 30
-  track_width: 30
+  wheelbase_length: 24
+  track_width: 21.5
 
   verbose: 1

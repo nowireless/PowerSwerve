@@ -79,10 +79,11 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         /*
          * Modules 
          */
+        var globalModuleOffset = Rotation2d.fromDegrees(90); // TODO Make this a constant
         SwerveModule.Config frontLeft = SwerveModule.getDefaultConfig(kP, kI, kD);
         frontLeft.moduleOffset = moduleOffsets_.getOffset(
                 (int)factory.getConstant("drive", "front_left_id")
-        );
+        ).rotateBy(globalModuleOffset);
         frontLeft_ = new SwerveModule(
             "FrontLeft", 
             frontLeft, 
@@ -93,7 +94,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         SwerveModule.Config frontRight = SwerveModule.getDefaultConfig(kP, kI, kD);
         frontRight.moduleOffset = moduleOffsets_.getOffset(
                 (int)factory.getConstant("drive", "front_right_id")
-        );
+        ).rotateBy(globalModuleOffset);;
         frontRight_ = new SwerveModule(
             "FrontRight", 
             frontRight, 
@@ -104,7 +105,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         SwerveModule.Config backLeft = SwerveModule.getDefaultConfig(kP, kI, kD);
         backLeft.moduleOffset = moduleOffsets_.getOffset(
                 (int)factory.getConstant("drive", "back_left_id")
-        );
+        ).rotateBy(globalModuleOffset.inverse());;
         backLeft_ = new SwerveModule(
             "BackLeft",
             backLeft,
@@ -115,7 +116,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         SwerveModule.Config backRight = SwerveModule.getDefaultConfig(kP, kI, kD);
         backRight.moduleOffset = moduleOffsets_.getOffset(
                 (int)factory.getConstant("drive", "back_right_id")
-        );
+        ).rotateBy(globalModuleOffset.inverse());;
         backRight_ = new SwerveModule(
             "BackRight", 
             backRight, 
