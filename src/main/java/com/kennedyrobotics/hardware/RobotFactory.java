@@ -87,22 +87,22 @@ public class RobotFactory {
         motor.config_kP(
                 0,
                 getConstant(subsystemName, "kP", 0),
-                CANConstants.kLongCANTimeoutMs
+                CANConstants.kLongTimeoutMs
         );
         motor.config_kI(
                 0,
                 getConstant(subsystemName, "kI", 0),
-                CANConstants.kLongCANTimeoutMs
+                CANConstants.kLongTimeoutMs
         );
         motor.config_kD(
                 0,
                 getConstant(subsystemName, "kD", 0),
-                CANConstants.kLongCANTimeoutMs
+                CANConstants.kLongTimeoutMs
         );
         motor.config_kF(
                 0,
                 getConstant(subsystemName, "kF", 0),
-                CANConstants.kLongCANTimeoutMs
+                CANConstants.kLongTimeoutMs
         );
 
         return motor;

@@ -71,10 +71,10 @@ public class Elevator extends SubsystemBase {
         liftMotorLeader.setInverted(false);
         liftMotorLeader.setNeutralMode(NeutralMode.Brake);
         liftMotorLeader.configForwardLimitSwitchSource(
-                LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, CANConstants.kLongCANTimeoutMs);
+                LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, CANConstants.kLongTimeoutMs);
         liftMotorLeader.configSelectedFeedbackSensor(
-                FeedbackDevice.IntegratedSensor, 0, CANConstants.kLongCANTimeoutMs);
-        CTREMotorUtil.configClearPositionOnLimitR(liftMotorLeader, true, CANConstants.kLongCANTimeoutMs);
+                FeedbackDevice.IntegratedSensor, 0, CANConstants.kLongTimeoutMs);
+        CTREMotorUtil.configClearPositionOnLimitR(liftMotorLeader, true, CANConstants.kLongTimeoutMs);
 
         // Follower configuraiton
         liftMotorFollower = factory.getMotor(NAME, "liftFollower", liftMotorLeader);
@@ -239,7 +239,7 @@ public class Elevator extends SubsystemBase {
     // Modify/Control Elevator State
     //
     public void zeroSensors() {
-        liftMotorLeader.setSelectedSensorPosition(0, 0, CANConstants.kCANTimeoutMs);
+        liftMotorLeader.setSelectedSensorPosition(0, 0, CANConstants.kTimeoutMs);
         hasBeenZeroed = true;
     }
 
