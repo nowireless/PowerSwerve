@@ -16,6 +16,7 @@ public class Elevator extends SubsystemBase {
     private static final String NAME = "elevator";
 
     public enum ControlState {
+        Neutral,
         OpenLoop,
         PositionPID,
     }
@@ -68,7 +69,7 @@ public class Elevator extends SubsystemBase {
         // - Positive Motor command values mean up
         //
         liftMotorLeader = factory.getCtreMotor(NAME, "liftLeader");
-        liftMotorLeader.setInverted(false);
+        liftMotorLeader.setInverted(true);
         liftMotorLeader.setNeutralMode(NeutralMode.Brake);
         liftMotorLeader.configForwardLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, CANConstants.kLongTimeoutMs);
@@ -78,6 +79,7 @@ public class Elevator extends SubsystemBase {
 
         // Follower configuraiton
         liftMotorFollower = factory.getCtreMotor(NAME, "liftFollower", liftMotorLeader);
+        liftMotorFollower.setNeutralMode(NeutralMode.Brake);
 
         // The lift break is a single solenoid, that by default does not break the elevator. It has to be commanded to
         // break.
@@ -108,7 +110,7 @@ public class Elevator extends SubsystemBase {
         periodicIO.isAtLowLimit = CTREMotorUtil.isRevLimitSwitchClosed(liftMotorLeader);
 
 
-        // Encoder counts to elevator extension in inches. TODO Need to add the scale value to the hight calculate
+        // Encoder counts to elevator extension in inches. TODO Need to add the scale value to the height calculate
         // 1 Revolution   ? Inches
         // ------------ * ------------
         // 2048 CPR       1 Revolution
@@ -125,12 +127,16 @@ public class Elevator extends SubsystemBase {
 
 
         // Motor stats
+        periodicIO.outputPercent = liftMotorLeader.getMotorOutputPercent();
+
         periodicIO.leaderMotorCurrent = CTREMotorUtil.getStatorCurrent(liftMotorLeader);
         periodicIO.followerMotorCurrent = CTREMotorUtil.getStatorCurrent(liftMotorFollower);
     }
 
     public void writePeriodicOutputs() {
         if (controlState == ControlState.OpenLoop) {
+            System.out.println("[Elevator] OpenLoop");
+
             liftMotorLeader.set(ControlMode.PercentOutput, periodicIO.demand, DemandType.ArbitraryFeedForward, periodicIO.feedForward);
 
             if (periodicIO.demand == 0.0) {
@@ -148,12 +154,23 @@ public class Elevator extends SubsystemBase {
             }
 
         } else if (controlState == ControlState.PositionPID) {
+            System.out.println("[Elevator] PositionPID");
+
             // TODO Need to add PID of some sort
             System.out.println("PositionPID does not work yet");
-            liftMotorLeader.neutralOutput();
+            liftMotorLeader.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, 0);
+        } else if (controlState == ControlState.Neutral){
+            System.out.println("[Elevator] In Neutral!" );
+            // Neutral Output doesn't stop the follower talon
+            // liftMotorLeader.neutralOutput();
+            // TODO Report a bug, where neutral mode doesn't stop a motor, when a Set with a PercentOutput with ArbitrayFeedForward.
+            // As a WAR use the following to stop both motors
+            liftMotorLeader.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, 0);
+            liftBrake.set(true);
         } else {
+            System.out.println("[Elevator] Unknown State: " + controlState);
             DriverStation.reportError("Elevator in unknown state: "+controlState.toString(), false);
-            liftMotorLeader.neutralOutput();
+            liftMotorLeader.set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, 0);
             liftBrake.set(false);
         }
     }
@@ -167,6 +184,8 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber("Elevator Height", getInchesOffGround());
         SmartDashboard.putNumber("Elevator Height Raw", periodicIO.elevatorExtensionRaw);
         SmartDashboard.putBoolean("Elevator Low Limit", periodicIO.isAtLowLimit);
+        SmartDashboard.putNumber("Elevator Demand", periodicIO.demand);
+        SmartDashboard.putNumber("Elevator FeedForward", periodicIO.feedForward);
     }
 
     //
@@ -248,5 +267,10 @@ public class Elevator extends SubsystemBase {
     public void setOpenLoop(double percentage) {
         controlState = ControlState.OpenLoop;
         periodicIO.demand = percentage;
+    }
+
+    public void neutral() {
+        controlState = ControlState.Neutral;
+        periodicIO.demand = 0;
     }
 }

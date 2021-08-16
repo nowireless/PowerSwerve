@@ -5,12 +5,15 @@
 package frc.robot;
 
 import com.kennedyrobotics.hardware.RobotFactory;
+import com.kennedyrobotics.triggers.DPadTrigger;
 import com.team254.lib.loops.Looper;
 import com.team254.lib.subsystems.SubsystemManager;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.MoveElevatorCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -65,6 +68,7 @@ public class RobotContainer {
     // Setup commands
     //
     m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
+
     m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
     //
@@ -80,7 +84,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    DPadTrigger elevatorUpButton = new DPadTrigger(m_controller, DPadTrigger.DPad.kUp);
+    elevatorUpButton.whileActiveContinuous(new MoveElevatorCommand(m_elevator, 0.15));
+
+    DPadTrigger elevatorDownButton = new DPadTrigger(m_controller, DPadTrigger.DPad.KDown);
+    elevatorDownButton.whileActiveContinuous(new MoveElevatorCommand(m_elevator, -0.1));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

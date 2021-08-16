@@ -31,7 +31,7 @@ subsystems:
       liftLeader: 10
       liftFollower: 11
     solenoids:
-      liftBrake: 0
+      liftBrake: 0 # Should be 0 - To test without the brake enabled, just set this to -1
     constants:
       intakeHeightOffset: 0
 

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.kauailabs.navx.frc.AHRS;
 import com.kennedyrobotics.hardware.RobotFactory;
 import com.kennedyrobotics.swerve.*;
 import com.kennedyrobotics.swerve.SwerveSignal.ControlOrientation;
@@ -11,7 +10,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.subsystems.CheesySubsystem;
-import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,6 +23,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         public Rotation2d gyro_heading = Rotation2d.identity();
 
         // OUTPUTS
+        public ControlOrientation controlOrientation = ControlOrientation.kRobotCentric;
         public SwerveCommand swerveCommand = new SwerveCommand();
     }
 
@@ -65,7 +64,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
          * IMU
          */
         // TODO: Add getAHRS method to RobotFactory and read what port the NavX is from Yaml
-        // TODO: THIS IS A HACK FOR RIGHT NOW BECUASE IT IS EASY!!!!
+        // TODO: THIS IS A HACK FOR RIGHT NOW BECAUSE IT IS EASY!!!!
         pigionIMUTalon_ = new TalonSRX(20);
         imu_ = new PigeonIMU(pigionIMUTalon_);
 
@@ -132,11 +131,6 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         );
     }
 
-//    @Override
-//    protected void initDefaultCommand() {
-//        setDefaultCommand(new TeleopDriveCommand());
-//    }
-
     public void initialize() {
         modules_.forEach((m) -> m.initialize());
     }
@@ -149,8 +143,9 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
     }
 
     public void set(SwerveSignal signal) {
-        log("Command: " + signal);
+        // log("Command: " + signal);
 
+        periodicIO_.controlOrientation = signal.orientation();
         if (signal.orientation() == ControlOrientation.kFieldCentric) {
             signal.fieldOrient(this.getHeading());
         }
@@ -160,12 +155,12 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         // Pass along the swerve singal's brake setting
         periodicIO_.swerveCommand.setBrake(signal.brakeMode());
 
-        log("Move " +
-                periodicIO_.swerveCommand.frontLeft.speed + ", " +
-                periodicIO_.swerveCommand.frontRight.speed + ", " +
-                periodicIO_.swerveCommand.backLeft.speed + ", " +
-                periodicIO_.swerveCommand.backRight.speed
-        );
+        // log("Move " +
+        //         periodicIO_.swerveCommand.frontLeft.speed + ", " +
+        //         periodicIO_.swerveCommand.frontRight.speed + ", " +
+        //         periodicIO_.swerveCommand.backLeft.speed + ", " +
+        //         periodicIO_.swerveCommand.backRight.speed
+        // );
     }
 
     @Override
@@ -198,7 +193,6 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
     @Override
     public synchronized void readPeriodicInputs() {
         periodicIO_.gyro_heading = Rotation2d.fromDegrees(imu_.getFusedHeading()).inverse().rotateBy(gyroOffset_.inverse());
-        SmartDashboard.putNumber("Gyro Heading", getHeading().getDegrees());
 
         modules_.forEach((m) -> m.readPeriodicInputs());
 
@@ -219,6 +213,9 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
 
     @Override
     public void outputTelemetry() {
+        SmartDashboard.putNumber("Drive Heading", getHeading().getDegrees());
+        SmartDashboard.putString("Drive ControlMode", periodicIO_.controlOrientation.toString());
+
         modules_.forEach((m) -> m.outputTelemetry());
     }
 
