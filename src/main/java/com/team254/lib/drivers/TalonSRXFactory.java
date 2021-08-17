@@ -42,18 +42,18 @@ public class TalonSRXFactory {
     }
 
     private static final Configuration kDefaultConfiguration = new Configuration();
-    private static final Configuration kSlaveConfiguration = new Configuration();
+    private static final Configuration kFollowerConfiguration = new Configuration();
 
     static {
         // This control frame value seems to need to be something reasonable to avoid the Talon's
         // LEDs behaving erratically.  Potentially try to increase as much as possible.
-        kSlaveConfiguration.CONTROL_FRAME_PERIOD_MS = 100;
-        kSlaveConfiguration.MOTION_CONTROL_FRAME_PERIOD_MS = 1000;
-        kSlaveConfiguration.GENERAL_STATUS_FRAME_RATE_MS = 1000;
-        kSlaveConfiguration.FEEDBACK_STATUS_FRAME_RATE_MS = 1000;
-        kSlaveConfiguration.QUAD_ENCODER_STATUS_FRAME_RATE_MS = 1000;
-        kSlaveConfiguration.ANALOG_TEMP_VBAT_STATUS_FRAME_RATE_MS = 1000;
-        kSlaveConfiguration.PULSE_WIDTH_STATUS_FRAME_RATE_MS = 1000;
+        kFollowerConfiguration.CONTROL_FRAME_PERIOD_MS = 100;
+        kFollowerConfiguration.MOTION_CONTROL_FRAME_PERIOD_MS = 1000;
+        kFollowerConfiguration.GENERAL_STATUS_FRAME_RATE_MS = 1000;
+        kFollowerConfiguration.FEEDBACK_STATUS_FRAME_RATE_MS = 1000;
+        kFollowerConfiguration.QUAD_ENCODER_STATUS_FRAME_RATE_MS = 1000;
+        kFollowerConfiguration.ANALOG_TEMP_VBAT_STATUS_FRAME_RATE_MS = 1000;
+        kFollowerConfiguration.PULSE_WIDTH_STATUS_FRAME_RATE_MS = 1000;
     }
 
     // Create a CANTalon with the default (out of the box) configuration.
@@ -61,9 +61,9 @@ public class TalonSRXFactory {
         return createTalon(id, kDefaultConfiguration);
     }
 
-    public static TalonSRX createPermanentSlaveTalon(int id, int master_id) {
-        final TalonSRX talon = createTalon(id, kSlaveConfiguration);
-        talon.set(ControlMode.Follower, master_id);
+    public static TalonSRX createPermanentFollowerTalon(int id, int leaderID) {
+        final TalonSRX talon = createTalon(id, kFollowerConfiguration);
+        talon.set(ControlMode.Follower, leaderID);
         return talon;
     }
 

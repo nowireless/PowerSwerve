@@ -49,20 +49,20 @@ public class CtreMotorFactory {
     }
 
     private static final Configuration kDefaultConfiguration = new Configuration();
-    private static final Configuration kSlaveConfiguration = new Configuration();
+    private static final Configuration kFollowerConfiguration = new Configuration();
 
     static {
         // This control frame value seems to need to be something reasonable to avoid the Talon's
         // LEDs behaving erratically.  Potentially try to increase as much as possible.
 
-        // Slave Config edits
-        kSlaveConfiguration.CONTROL_FRAME_PERIOD_MS = 100;
-        kSlaveConfiguration.MOTION_CONTROL_FRAME_PERIOD_MS = 1000;
-        kSlaveConfiguration.GENERAL_STATUS_FRAME_RATE_MS = 255;
-        kSlaveConfiguration.FEEDBACK_STATUS_FRAME_RATE_MS = 255;
-        kSlaveConfiguration.QUAD_ENCODER_STATUS_FRAME_RATE_MS = 1000;
-        kSlaveConfiguration.ANALOG_TEMP_VBAT_STATUS_FRAME_RATE_MS = 1000;
-        kSlaveConfiguration.PULSE_WIDTH_STATUS_FRAME_RATE_MS = 1000;
+        // Follower Config edits
+        kFollowerConfiguration.CONTROL_FRAME_PERIOD_MS = 100;
+        kFollowerConfiguration.MOTION_CONTROL_FRAME_PERIOD_MS = 1000;
+        kFollowerConfiguration.GENERAL_STATUS_FRAME_RATE_MS = 255;
+        kFollowerConfiguration.FEEDBACK_STATUS_FRAME_RATE_MS = 255;
+        kFollowerConfiguration.QUAD_ENCODER_STATUS_FRAME_RATE_MS = 1000;
+        kFollowerConfiguration.ANALOG_TEMP_VBAT_STATUS_FRAME_RATE_MS = 1000;
+        kFollowerConfiguration.PULSE_WIDTH_STATUS_FRAME_RATE_MS = 1000;
     }
 
     // Create a CANTalon with the default (out of the box) configuration.
@@ -70,20 +70,20 @@ public class CtreMotorFactory {
         return createTalon(id, kDefaultConfiguration, isFalcon);
     }
 
-    public static IMotorControllerEnhanced createPermanentSlaveTalon(
+    public static IMotorControllerEnhanced createPermanentFollowerTalon(
             int id,
             boolean isFalcon,
-            IMotorController master
+            IMotorController leader
     ) {
         final IMotorControllerEnhanced talon = createTalon(
                 id,
-                kSlaveConfiguration,
+                kFollowerConfiguration,
                 isFalcon
         );
         System.out.println(
-                "Slaving talon on " + id + " to talon on " + master.getDeviceID()
+                "Slaving talon on " + id + " to talon on " + leader.getDeviceID()
         );
-        talon.follow(master);
+        talon.follow(leader);
         return talon;
     }
 
@@ -159,15 +159,15 @@ public class CtreMotorFactory {
         return createVictor(id, kDefaultConfiguration);
     }
 
-    public static IMotorController createPermanentSlaveVictor(
+    public static IMotorController createPermanentFollowerVictor(
             int id,
-            IMotorController master
+            IMotorController leader
     ) {
-        final IMotorController victor = createVictor(id, kSlaveConfiguration);
+        final IMotorController victor = createVictor(id, kFollowerConfiguration);
         System.out.println(
-                "Slaving victor on " + id + " to talon on " + master.getDeviceID()
+                "Slaving victor on " + id + " to talon on " + leader.getDeviceID()
         );
-        victor.follow(master);
+        victor.follow(leader);
         return victor;
     }
 

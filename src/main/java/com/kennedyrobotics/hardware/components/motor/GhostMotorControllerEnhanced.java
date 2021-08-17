@@ -512,7 +512,7 @@ public class GhostMotorControllerEnhanced implements IMotorControllerEnhanced {
     }
 
     @Override
-    public void follow(IMotorController masterToFollow) {}
+    public void follow(IMotorController leaderToFollow) {}
 
     @Override
     public void valueUpdated() {}

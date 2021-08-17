@@ -79,7 +79,7 @@ public class RobotFactory {
                                 subsystem.falcons.get(name),
                                 true
                         );
-            } // Never make the victor a master
+            } // Never make the victor a leader
         }
         if (motor == null) {
             if (subsystem.isImplemented()) reportGhostWarning(
@@ -123,32 +123,32 @@ public class RobotFactory {
     public IMotorController getCtreMotor(
             String subsystemName,
             String name,
-            IMotorController master
+            IMotorController leader
     ) { // TODO: optimize this method
         IMotorController motor = null;
         var subsystem = getSubsystem(subsystemName);
-        if (subsystem.isImplemented() && master != null) {
+        if (subsystem.isImplemented() && leader != null) {
             if (isHardwareValid(subsystem.talons.get(name))) {
                 // Talons must be following another Talon, cannot follow a Victor.
                 motor =
-                        CtreMotorFactory.createPermanentSlaveTalon(
+                        CtreMotorFactory.createPermanentFollowerTalon(
                                 subsystem.talons.get(name),
                                 false,
-                                master
+                                leader
                         );
             } else if (isHardwareValid(subsystem.falcons.get(name))) {
                 motor =
-                        CtreMotorFactory.createPermanentSlaveTalon(
+                        CtreMotorFactory.createPermanentFollowerTalon(
                                 subsystem.falcons.get(name),
                                 true,
-                                master
+                                leader
                         );
             } else if (isHardwareValid(subsystem.victors.get(name))) {
                 // Victors can follow Talons or another Victor.
                 motor =
-                        CtreMotorFactory.createPermanentSlaveVictor(
+                        CtreMotorFactory.createPermanentFollowerVictor(
                                 subsystem.victors.get(name),
-                                master
+                                leader
                         );
             }
         }
@@ -160,8 +160,8 @@ public class RobotFactory {
             );
             motor = CtreMotorFactory.createGhostTalon();
         }
-        if (master != null) {
-            motor.setInverted(master.getInverted());
+        if (leader != null) {
+            motor.setInverted(leader.getInverted());
         }
         return motor;
     }
