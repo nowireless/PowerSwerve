@@ -71,7 +71,7 @@ public class Elevator extends SubsystemBase {
         liftMotorLeader = factory.getCtreMotor(NAME, "liftLeader");
         liftMotorLeader.setInverted(true);
         liftMotorLeader.setNeutralMode(NeutralMode.Brake);
-        liftMotorLeader.configForwardLimitSwitchSource(
+        liftMotorLeader.configReverseLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, CANConstants.kLongTimeoutMs);
         liftMotorLeader.configSelectedFeedbackSensor(
                 FeedbackDevice.IntegratedSensor, 0, CANConstants.kLongTimeoutMs);
