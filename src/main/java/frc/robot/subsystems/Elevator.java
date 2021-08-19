@@ -77,7 +77,7 @@ public class Elevator extends SubsystemBase {
                 FeedbackDevice.IntegratedSensor, 0, CANConstants.kLongTimeoutMs);
         CTREMotorUtil.configClearPositionOnLimitR(liftMotorLeader, true, CANConstants.kLongTimeoutMs);
 
-        // Follower configuraiton
+        // Follower configuration
         liftMotorFollower = factory.getCtreMotor(NAME, "liftFollower", liftMotorLeader);
         liftMotorFollower.setNeutralMode(NeutralMode.Brake);
 
