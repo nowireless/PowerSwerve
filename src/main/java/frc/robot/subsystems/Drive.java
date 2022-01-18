@@ -3,13 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.kennedyrobotics.hardware.RobotFactory;
+import com.kennedyrobotics.math.Rotation2dUtil;
 import com.kennedyrobotics.swerve.*;
 import com.kennedyrobotics.swerve.SwerveSignal.ControlOrientation;
 import com.kennedyrobotics.swerve.drive.DriveSparkMax;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.subsystems.CheesySubsystem;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -20,7 +21,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
 
     public static class PeriodicIO {
         // INPUTS
-        public Rotation2d gyro_heading = Rotation2d.identity();
+        public Rotation2d gyro_heading = Rotation2dUtil.identity();
 
         // OUTPUTS
         public ControlOrientation controlOrientation = ControlOrientation.kRobotCentric;
@@ -47,7 +48,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
 
     // Hardware States
     private PeriodicIO periodicIO_;
-    private Rotation2d gyroOffset_ = Rotation2d.identity();
+    private Rotation2d gyroOffset_ = Rotation2dUtil.identity();
     private boolean debugControl_;
 
     public void setDebugControl(boolean value) { debugControl_ = value; }
@@ -104,7 +105,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         SwerveModule.Config backLeft = SwerveModule.getDefaultConfig(kP, kI, kD);
         backLeft.moduleOffset = moduleOffsets_.getOffset(
                 (int)factory.getConstant("drive", "back_left_id")
-        ).rotateBy(globalModuleOffset.inverse());;
+        ).rotateBy(globalModuleOffset.unaryMinus());;
         backLeft_ = new SwerveModule(
             "BackLeft",
             backLeft,
@@ -115,7 +116,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
         SwerveModule.Config backRight = SwerveModule.getDefaultConfig(kP, kI, kD);
         backRight.moduleOffset = moduleOffsets_.getOffset(
                 (int)factory.getConstant("drive", "back_right_id")
-        ).rotateBy(globalModuleOffset.inverse());;
+        ).rotateBy(globalModuleOffset.unaryMinus());;
         backRight_ = new SwerveModule(
             "BackRight", 
             backRight, 
@@ -179,7 +180,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
     public synchronized void setHeading(Rotation2d heading) {
         System.out.println("SET HEADING: " + heading.getDegrees());
 
-        gyroOffset_ = heading.rotateBy(Rotation2d.fromDegrees(imu_.getFusedHeading()).inverse());
+        gyroOffset_ = heading.rotateBy(Rotation2d.fromDegrees(imu_.getFusedHeading()).unaryMinus());
         System.out.println("Gyro offset: " + gyroOffset_.getDegrees());
 
        periodicIO_.gyro_heading = heading;
@@ -192,7 +193,7 @@ public class Drive extends SubsystemBase implements CheesySubsystem {
 
     @Override
     public synchronized void readPeriodicInputs() {
-        periodicIO_.gyro_heading = Rotation2d.fromDegrees(imu_.getFusedHeading()).inverse().rotateBy(gyroOffset_.inverse());
+        periodicIO_.gyro_heading = Rotation2d.fromDegrees(imu_.getFusedHeading()).unaryMinus().rotateBy(gyroOffset_.unaryMinus());
 
         modules_.forEach((m) -> m.readPeriodicInputs());
 

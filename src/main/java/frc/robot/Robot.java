@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.kennedyrobotics.hardware.RobotFactory;
+import com.kennedyrobotics.math.Rotation2dUtil;
 import com.kennedyrobotics.util.JoystickWarningHelper;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.util.CrashTracker;
@@ -138,7 +139,7 @@ public class Robot extends TimedRobot {
       m_robotContainer.m_disabledLooper.stop();
 
       m_robotContainer.m_drive.initialize();
-      m_robotContainer.m_drive.setHeading(Rotation2d.identity()); // TODO this is the initial heading of the robot
+      m_robotContainer.m_drive.setHeading(Rotation2dUtil.identity()); // TODO this is the initial heading of the robot
 
       // This makes sure that the autonomous stops running when
       // teleop starts running. If you want the autonomous to

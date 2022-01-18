@@ -13,24 +13,24 @@ import com.team254.lib.loops.ILooper;
  * instantializing all member components at the start of the match.
  */
 public interface CheesySubsystem {
-    public default void writeToLog() {
+    default void writeToLog() {
     }
 
     // Optional design pattern for caching periodic reads to avoid hammering the HAL/CAN.
-    public default void readPeriodicInputs() {
+    default void readPeriodicInputs() {
     }
 
     // Optional design pattern for caching periodic writes to avoid hammering the HAL/CAN.
-    public default void writePeriodicOutputs() {
+    default void writePeriodicOutputs() {
     }
 
-    public default boolean checkSystem() { return true; };
+    default boolean checkSystem() { return true; };
 
-    public void outputTelemetry();
+    void outputTelemetry();
 
-    public void stop();
+    void stop();
 
-    public default void zeroSensors() {}
+    default void zeroSensors() {}
 
-    public default void registerEnabledLoops(ILooper enabledLooper) {}
+    default void registerEnabledLoops(ILooper enabledLooper) {}
 }

@@ -1,6 +1,6 @@
 package com.kennedyrobotics.swerve;
 
-import com.team254.lib.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 /**
  * A swerve drive command consisting of the forward and strafing commands and whether the brake mode is enabled.

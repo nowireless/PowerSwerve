@@ -1,6 +1,6 @@
 package com.kennedyrobotics.swerve;
 
-import com.team254.lib.geometry.Rotation2d;
+import com.kennedyrobotics.math.Rotation2dUtil;
 
 public class SwerveDriveHelper {
     public static final double kEpsilon = 1e-5;
@@ -70,10 +70,10 @@ public class SwerveDriveHelper {
         state.backLeft.speed = speeds[2];
         state.backRight.speed = speeds[3];
 
-        state.frontLeft.angle = Rotation2d.fromRadians(Math.atan2(b, d));
-        state.frontRight.angle = Rotation2d.fromRadians(Math.atan2(b, c));
-        state.backLeft.angle = Rotation2d.fromRadians(Math.atan2(a, d));
-        state.backRight.angle = Rotation2d.fromRadians(Math.atan2(a, c));
+        state.frontLeft.angle = Rotation2dUtil.fromRadians(Math.atan2(b, d));
+        state.frontRight.angle = Rotation2dUtil.fromRadians(Math.atan2(b, c));
+        state.backLeft.angle = Rotation2dUtil.fromRadians(Math.atan2(a, d));
+        state.backRight.angle = Rotation2dUtil.fromRadians(Math.atan2(a, c));
 
         return state;
     }

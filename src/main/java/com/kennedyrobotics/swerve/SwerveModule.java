@@ -3,9 +3,10 @@ package com.kennedyrobotics.swerve;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.*;
 import com.kennedyrobotics.hardware.CANConstants;
+import com.kennedyrobotics.math.Rotation2dUtil;
 import com.kennedyrobotics.swerve.drive.DriveMotor;
-import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.subsystems.CheesySubsystem;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -31,7 +32,7 @@ public class SwerveModule implements CheesySubsystem {
         /**
          * Angle of drive wheel in radians
          */
-        public Rotation2d angle = Rotation2d.identity();
+        public Rotation2d angle = Rotation2dUtil.identity();
 
         /**
          * Brake Mode
@@ -45,7 +46,7 @@ public class SwerveModule implements CheesySubsystem {
         public double kD;
 
         public double nativeUnitsPerRotationAbs;
-        public Rotation2d moduleOffset = Rotation2d.identity();
+        public Rotation2d moduleOffset = Rotation2dUtil.identity();
     }
 
     public static Config getDefaultConfig() {
@@ -59,7 +60,7 @@ public class SwerveModule implements CheesySubsystem {
         config.kD = d;
 
         config.nativeUnitsPerRotationAbs = kSteerNativeUnitsPerRotationAbs;
-        config.moduleOffset = Rotation2d.identity();
+        config.moduleOffset = Rotation2dUtil.identity();
 
         return config;
     }
@@ -76,7 +77,7 @@ public class SwerveModule implements CheesySubsystem {
         // OUTPUTS
         boolean brakeMode;
         double driveValue;
-        Rotation2d goalAngle = Rotation2d.identity();
+        Rotation2d goalAngle = Rotation2dUtil.identity();
     }
 
 
@@ -208,9 +209,9 @@ public class SwerveModule implements CheesySubsystem {
         periodicIO_.steerClosedLoopError = steer_.getClosedLoopError(kSteerPIDId)/config_.nativeUnitsPerRotationAbs;
 
         periodicIO_.absoluteAngleRaw = steer_.getSelectedSensorPosition(0);
-        periodicIO_.absoluteAngle = Rotation2d.fromRadians(nativeToAngle(
+        periodicIO_.absoluteAngle = Rotation2dUtil.fromRadians(nativeToAngle(
                 periodicIO_.absoluteAngleRaw, EncoderType.kAbsolute
-        )).rotateBy(config_.moduleOffset.inverse());
+        )).rotateBy(config_.moduleOffset.unaryMinus()); // unaryMinus() is inverse()
 
         periodicIO_.ready = true;
     }
