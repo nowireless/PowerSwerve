@@ -61,7 +61,7 @@ public class AutoSelector implements Runnable {
         log("Starting initialization");
 
         // Get stored auto value from the file system
-        String autoId = Preferences.getInstance().getString(kPreferenceKey, kDefaultAutoId);
+        String autoId = Preferences.getString(kPreferenceKey, kDefaultAutoId);
         if (!commands_.containsKey(autoId)) {
             logWarn("Auto does not exist in command map" + autoId);
             autoId = kDefaultAutoId;
@@ -142,7 +142,7 @@ public class AutoSelector implements Runnable {
      */
     private synchronized void updateSelectedAuto() {
         Auto auto = selectedAuto();
-        Preferences.getInstance().putString(kPreferenceKey, auto.id);
+        Preferences.putString(kPreferenceKey, auto.id);
         SmartDashboard.putString("Selected Auto", auto.id);
     }
 

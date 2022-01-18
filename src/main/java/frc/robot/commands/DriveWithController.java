@@ -27,12 +27,12 @@ public class DriveWithController extends CommandBase {
 
     @Override
     public void execute() {
-         double xMove = -controller_.getY(GenericHID.Hand.kLeft);
-         double yMove = controller_.getX(GenericHID.Hand.kLeft);
+         double xMove = -controller_.getLeftY();
+         double yMove = controller_.getLeftX();
          double rotate;
 
-        double left = controller_.getTriggerAxis(GenericHID.Hand.kLeft);
-        double right = controller_.getTriggerAxis(GenericHID.Hand.kRight);
+        double left = controller_.getLeftTriggerAxis();
+        double right = controller_.getRightTriggerAxis();
 
         if(left < right) {
             rotate =  right;

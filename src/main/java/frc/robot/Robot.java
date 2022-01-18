@@ -11,7 +11,7 @@ import com.team254.lib.loops.Looper;
 import com.team254.lib.subsystems.SubsystemManager;
 import com.team254.lib.util.CrashTracker;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;

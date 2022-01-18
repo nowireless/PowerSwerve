@@ -1,6 +1,6 @@
 package com.kennedyrobotics.hardware.components.pcm;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class GhostDoubleSolenoid implements IDoubleSolenoid {
