@@ -2,6 +2,8 @@ package com.kennedyrobotics.hardware;
 
 import java.io.InputStream;
 import java.util.*;
+
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.introspector.BeanAccess;
@@ -22,7 +24,7 @@ public class YamlConfig {
     private String $extends;
     Map<String, SubsystemConfig> subsystems;
     Map<String, Double> constants = new HashMap<>();
-    Integer pcm;
+    PneumaticsModuleConfig pneumaticsModule;
 
     public static YamlConfig loadFrom(InputStream input)
             throws ConfigIsAbstractException {
@@ -182,6 +184,30 @@ public class YamlConfig {
         }
     }
 
+    public static class PneumaticsModuleConfig {
+
+        Integer id;
+        PneumaticsModuleType type;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PneumaticsModuleConfig that = (PneumaticsModuleConfig) o;
+            return id == that.id && type == that.type;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, type);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("{ id = %d, type = %s }", id, type.toString());
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -192,13 +218,13 @@ public class YamlConfig {
                         Objects.equals($extends, that.$extends) &&
                         subsystems.equals(that.subsystems) &&
                         constants.equals(that.constants) &&
-                        Objects.equals(pcm, that.pcm)
+                        pneumaticsModule.equals(that.pneumaticsModule)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash($abstract, $extends, subsystems, constants, pcm);
+        return Objects.hash($abstract, $extends, subsystems, constants, pneumaticsModule);
     }
 
     @Override
@@ -217,7 +243,7 @@ public class YamlConfig {
                         result.subsystems.merge(key, value, (b, a) -> SubsystemConfig.merge(a, b))
         );
         mergeMap(result.constants, active.constants, base.constants);
-        result.pcm = active.pcm != null ? active.pcm : base.pcm;
+        result.pneumaticsModule = active.pneumaticsModule != null ? active.pneumaticsModule : base.pneumaticsModule;
         result.$abstract = active.$abstract;
         result.$extends = null;
         return result;

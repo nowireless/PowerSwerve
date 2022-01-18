@@ -1,20 +1,12 @@
 package com.kennedyrobotics.hardware.components.pcm;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.CompressorConfigType;
 
 public class GhostCompressor implements ICompressor {
 
+    private CompressorConfigType compressorConfigType = CompressorConfigType.Disabled;
     private boolean enabled = false;
-
-    @Override
-    public void start() {
-        this.enabled = true;
-    }
-
-    @Override
-    public void stop() {
-        this.enabled = false;
-    }
 
     @Override
     public boolean enabled() {
@@ -22,9 +14,53 @@ public class GhostCompressor implements ICompressor {
     }
 
     @Override
-    public double getCompressorCurrent() {
+    public boolean getPressureSwitchValue() {
+        return false;
+    }
+
+    @Override
+    public double getCurrent() {
         return 0;
     }
+
+    @Override
+    public double getAnalogVoltage() {
+        return 0;
+    }
+
+    @Override
+    public double getPressure() {
+        return 0;
+    }
+
+    @Override
+    public void disable() {
+        this.enabled = false;
+    }
+
+    @Override
+    public void enableDigital() {
+        this.enabled = true;
+        compressorConfigType = CompressorConfigType.Digital;
+    }
+
+    @Override
+    public void enableAnalog(double minPressure, double maxPressure) {
+        this.enabled = true;
+        compressorConfigType = CompressorConfigType.Analog;
+    }
+
+    @Override
+    public void enableHybrid(double minPressure, double maxPressure) {
+        this.enabled = true;
+        compressorConfigType = CompressorConfigType.Hybrid;
+    }
+
+    @Override
+    public CompressorConfigType getConfigType() {
+        return compressorConfigType;
+    }
+
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -34,9 +70,9 @@ public class GhostCompressor implements ICompressor {
                 this::enabled,
                 value -> {
                     if (value) {
-                        start();
+                        enabled();
                     } else {
-                        stop();
+                        disable();
                     }
                 }
         );

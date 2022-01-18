@@ -1,6 +1,5 @@
 package com.kennedyrobotics.hardware;
 
-import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.jni.CANSparkMaxJNI;
 

@@ -52,6 +52,14 @@ def includeDesktopSupport = false
 dependencies {
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
+    implementation "org.yaml:snakeyaml:1.23"
+    implementation "gov.nist.math:jama:1.0.3"
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.0.3"
+    testImplementation "org.mockito:mockito-core:2.+"
+    testImplementation "org.hamcrest:hamcrest:2.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.0.3"
 
     roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)
@@ -87,3 +95,8 @@ jar {
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
+
+// Enable unit testing with JUnit
+test {
+    useJUnitPlatform()
+}

@@ -35,7 +35,9 @@ subsystems:
     constants:
       intakeHeightOffset: 0
 
-pcm: 0
+pneumaticsModule:
+  id: 0
+  type: CTREPCM # CTREPCM or REVPH
 
 constants:
   wheelbase_length: 24

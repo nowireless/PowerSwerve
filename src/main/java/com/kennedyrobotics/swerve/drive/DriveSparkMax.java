@@ -1,11 +1,9 @@
 package com.kennedyrobotics.swerve.drive;
 
 import com.kennedyrobotics.exceptions.TodoException;
-import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSparkMax implements DriveMotor {

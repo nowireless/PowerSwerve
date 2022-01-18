@@ -187,7 +187,7 @@ public class RobotFactory {
         var subsystem = getSubsystem(subsystemName);
         Integer solenoidId = subsystem.solenoids.get(name);
         if (subsystem.isImplemented() && isHardwareValid(solenoidId) && isPcmEnabled()) {
-            return new SolenoidImpl(config.pcm, solenoidId);
+            return new SolenoidImpl(config.pneumaticsModule.id, config.pneumaticsModule.type, solenoidId);
         }
         if (subsystem.isImplemented()) {
             reportGhostWarning("Solenoid", subsystemName, name);
@@ -208,7 +208,8 @@ public class RobotFactory {
                         isPcmEnabled()
         ) {
             return new DoubleSolenoidImpl(
-                    config.pcm,
+                    config.pneumaticsModule.id,
+                    config.pneumaticsModule.type,
                     solenoidConfig.forward,
                     solenoidConfig.reverse
             );
@@ -229,7 +230,7 @@ public class RobotFactory {
 
     public ICompressor getCompressor() {
         if (isPcmEnabled()) {
-            return new CompressorImpl(getPcmId());
+            return new CompressorImpl(config.pneumaticsModule.id, config.pneumaticsModule.type);
         }
         reportGhostWarning("Compressor", "ROOT", "on PCM ID " + getPcmId());
         return new GhostCompressor();
@@ -266,8 +267,13 @@ public class RobotFactory {
     }
 
     public int getPcmId() {
-        if (config.pcm == null) return -1;
-        return config.pcm;
+        if (config.pneumaticsModule == null
+                || config.pneumaticsModule.id == null
+                || config.pneumaticsModule.type == null) {
+            return -1;
+        }
+
+        return config.pneumaticsModule.id;
     }
 
     public boolean isPcmEnabled() {
