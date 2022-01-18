@@ -7,7 +7,6 @@ package frc.robot;
 import com.kennedyrobotics.hardware.RobotFactory;
 import com.kennedyrobotics.math.Rotation2dUtil;
 import com.kennedyrobotics.util.JoystickWarningHelper;
-import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.util.CrashTracker;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -40,7 +39,7 @@ public class Robot extends TimedRobot {
       CrashTracker.logRobotInit();
 
       // Disable Joystick warning
-      JoystickWarningHelper.disableWarning();
+      // JoystickWarningHelper.disableWarning();
 
       var factory = RobotFactory.getInstance();
       DriverStation.reportError("Robot Name: " + factory, false);

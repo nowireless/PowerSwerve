@@ -12,7 +12,7 @@ public class JoystickWarningHelper {
         try {
             Field f = DriverStation.class.getDeclaredField("m_nextMessageTime");
             f.setAccessible(true);
-            f.set(DriverStation.getInstance(), Double.MAX_VALUE);
+            f.set(null, Double.MAX_VALUE);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
