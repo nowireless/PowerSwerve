@@ -1,12 +1,12 @@
 package com.kennedyrobotics.swerve.drive;
 
-import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
-public class DriveSpeedController implements DriveMotor {
+public class DriveWPIMotorController implements DriveMotor {
 
-    private final SpeedController controller_;
+    private final MotorController controller_;
 
-    public DriveSpeedController(SpeedController controller) {
+    public DriveWPIMotorController(MotorController controller) {
         controller_ = controller;
     }
 
