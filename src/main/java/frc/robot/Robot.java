@@ -11,6 +11,7 @@ import com.team254.lib.loops.Looper;
 import com.team254.lib.subsystems.SubsystemManager;
 import com.team254.lib.util.CrashTracker;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private PowerDistributionPanel m_pdp;
 
   public Robot() {
     CrashTracker.logRobotConstruction();
@@ -75,6 +77,16 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Memory Free", Runtime.getRuntime().freeMemory());
     SmartDashboard.putNumber("Memory Total", Runtime.getRuntime().totalMemory());
     SmartDashboard.putNumber("Memory Max", Runtime.getRuntime().maxMemory());
+
+    SmartDashboard.putNumber("PDP Voltage", m_pdp.getVoltage());
+    SmartDashboard.putNumber("PDP Temperature C", m_pdp.getTemperature());
+    SmartDashboard.putNumber("PDP Total Current", m_pdp.getTotalCurrent());
+    SmartDashboard.putNumber("PDP Total Energy", m_pdp.getTotalEnergy());
+    SmartDashboard.putNumber("PDP Total Power", m_pdp.getTotalPower());
+    for (int i = 0; i <= 15; i++) {
+      var current = m_pdp.getCurrent(i);
+      SmartDashboard.putNumber("PDP Current " + i, current);
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
