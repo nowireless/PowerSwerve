@@ -57,12 +57,12 @@ public class DriveWithController extends CommandBase {
         rotate = Math.copySign(rotate * rotate, rotate);
 
         // TODO add an option, to easily nerf in this command
-        xMove *= 0.3;
-        yMove *= 0.3;
-        rotate *= 0.25;
-//        xMove *= 0.8;
-//        yMove *= 0.8;
-//        rotate *= 0.5;
+        // xMove *= 0.3;
+        // yMove *= 0.3;
+        // rotate *= 0.25;
+       xMove *= 0.8;
+       yMove *= 0.8;
+       rotate *= 0.5;
 
         if(controller_.getAButton()) {
             fieldOrient_ = false;
